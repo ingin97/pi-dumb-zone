@@ -1,0 +1,44 @@
+{
+  "name": "@ingin97/pi-dumb-zone",
+  "version": "0.1.3",
+  "description": "A deterministic Pi extension that warns about suspiciously agreeable assistant responses.",
+  "license": "MIT",
+  "keywords": [
+    "pi-package",
+    "pi-extension",
+    "pi-coding-agent"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ingin97/pi-dumb-zone.git"
+  },
+  "homepage": "https://github.com/ingin97/pi-dumb-zone#readme",
+  "bugs": {
+    "url": "https://github.com/ingin97/pi-dumb-zone/issues"
+  },
+  "files": [
+    "dumb-zone.ts",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "dev": "pi -e ./dumb-zone.ts",
+    "test": "tsx --test dumb-zone.test.ts",
+    "prepack": "npm test"
+  },
+  "devDependencies": {
+    "tsx": "^4.20.6"
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-coding-agent": "*"
+  },
+  "peerDependenciesMeta": {
+    "@earendil-works/pi-coding-agent": {
+      "optional": true
+    }
+  },
+  "pi": {
+    "extensions": ["./dumb-zone.ts"],
+    "image": "https://raw.githubusercontent.com/ingin97/pi-dumb-zone/master/docs/assets/header.png"
+  }
+}
