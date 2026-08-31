@@ -33,7 +33,7 @@ Then restart Pi or reload with `/reload`.
 
 ## Behavior
 
-The extension appends a green status dot after the context indicator in Pi's default footer. At **100k context tokens**, it changes that status to yellow, and shows one warning notification per session. A detected phrase takes priority and switches the status dot to red.
+The extension appends a green status dot after the context indicator in Pi's default footer. At **100k context tokens**, it changes that status to yellow, and shows one warning notification per session. A detected phrase takes priority and switches the status dot to red. Its notification displays the matched phrase, so the trigger is explicit.
 
 Matching is case-insensitive and allows flexible whitespace. It recognizes targeted strong-agreement phrases such as `you are absolutely right`, `you're right to question that`, `that's actually the better approach`, `exactly — the key thing is`, `100%`, `I couldn't agree more`, and `that's an excellent point` (including curly apostrophes). Only finalized assistant messages are inspected, so streamed text cannot produce duplicate alerts.
 

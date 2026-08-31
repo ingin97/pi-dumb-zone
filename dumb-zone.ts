@@ -73,8 +73,8 @@ function boxedAlert(
   color: "error" | "warning",
   title: string,
   detail: string,
+  width = 24,
 ): string {
-  const width = 24;
   const border = theme.fg(color, `╭${"─".repeat(width + 2)}╮`);
   const divider = theme.fg(color, `├${"─".repeat(width + 2)}┤`);
   const bottom = theme.fg(color, `╰${"─".repeat(width + 2)}╯`);
@@ -84,8 +84,19 @@ function boxedAlert(
   return [border, line(theme.fg(color, title)), divider, line(detail), bottom].join("\n");
 }
 
-function dumbZoneAlert(theme: ExtensionContext["ui"]["theme"], count: number): string {
-  return boxedAlert(theme, "error", "DUMB ZONE", `${count} detected`);
+export function dumbZoneAlert(
+  theme: ExtensionContext["ui"]["theme"],
+  count: number,
+  phrase: string,
+): string {
+  const detail = `matched: ${sanitizeStatusText(phrase)}`;
+  return boxedAlert(
+    theme,
+    "error",
+    `DUMB ZONE (${count})`,
+    detail,
+    Math.max(24, visibleWidth(detail)),
+  );
 }
 
 function approachingDumbZoneAlert(theme: ExtensionContext["ui"]["theme"]): string {
@@ -269,7 +280,9 @@ export default function dumbZone(pi: ExtensionAPI): void {
       installFooter(ctx);
 
       if (ctx.hasUI) {
-        ctx.ui.notify(dumbZoneAlert(ctx.ui.theme, detections));
+        // The alert colors its own box. An error notification prepends "Error:",
+        // which misaligns the box in the status area.
+        ctx.ui.notify(dumbZoneAlert(ctx.ui.theme, detections, detection.phrase));
       }
     }
 
