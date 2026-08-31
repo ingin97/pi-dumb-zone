@@ -1,6 +1,6 @@
 {
   "name": "@ingin97/pi-dumb-zone",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "A deterministic Pi extension that warns about suspiciously agreeable assistant responses.",
   "license": "MIT",
   "keywords": [
@@ -38,7 +38,9 @@
     }
   },
   "pi": {
-    "extensions": ["./dumb-zone.ts"],
+    "extensions": [
+      "./dumb-zone.ts"
+    ],
     "image": "https://raw.githubusercontent.com/ingin97/pi-dumb-zone/master/docs/assets/header.png"
   }
 }
