@@ -4,7 +4,7 @@
  * Reuses Pi's built-in compaction implementation, then opens the generated
  * summary in Pi's multiline editor before the compaction result is persisted.
  */
-import { compact, type ExtensionAPI } from "@earendil-works/pi-coding-agent";
+import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 
 export function shouldReviewCompaction(
   reason: "manual" | "threshold" | "overflow",
@@ -12,6 +12,10 @@ export function shouldReviewCompaction(
   hasUI: boolean,
 ): boolean {
   return hasUI && mode === "tui" && reason !== "overflow";
+}
+
+export function reviewedSummary(original: string, edited: string | undefined): string {
+  return edited?.trim() ? edited : original;
 }
 
 export default function compactionReview(pi: ExtensionAPI): void {
@@ -31,6 +35,10 @@ export default function compactionReview(pi: ExtensionAPI): void {
     }
 
     try {
+      // Load at runtime so this spike remains testable without installing Pi as
+      // a normal dependency. When loaded by Pi, the package is already present.
+      const { compact } = await import("@earendil-works/pi-coding-agent");
+
       // Generate the exact same kind of result Pi would normally generate.
       const generated = await compact(
         event.preparation,
@@ -45,10 +53,10 @@ export default function compactionReview(pi: ExtensionAPI): void {
       );
 
       const edited = await ctx.ui.editor("Review compaction summary", generated.summary);
+      const summary = reviewedSummary(generated.summary, edited);
 
-      // Cancelling the editor keeps Pi's generated summary. An empty edit is
-      // treated the same way so a stray delete cannot erase all context.
-      const summary = edited?.trim() ? edited : generated.summary;
+      // An empty edit is treated like cancel so a stray delete cannot erase
+      // all context. Cancel also keeps Pi's generated summary unchanged.
       if (edited !== undefined && !edited.trim()) {
         ctx.ui.notify("Empty compaction summary ignored; using Pi's generated summary", "warning");
       }
