@@ -18,12 +18,13 @@
   },
   "files": [
     "dumb-zone.ts",
+    "compaction-review.ts",
     "README.md",
     "LICENSE"
   ],
   "scripts": {
-    "dev": "pi -e ./dumb-zone.ts",
-    "test": "tsx --test dumb-zone.test.ts",
+    "dev": "pi -e ./dumb-zone.ts -e ./compaction-review.ts",
+    "test": "tsx --test dumb-zone.test.ts compaction-review.test.ts",
     "prepack": "npm test"
   },
   "devDependencies": {
@@ -39,7 +40,8 @@
   },
   "pi": {
     "extensions": [
-      "./dumb-zone.ts"
+      "./dumb-zone.ts",
+      "./compaction-review.ts"
     ],
     "image": "https://raw.githubusercontent.com/ingin97/pi-dumb-zone/master/docs/assets/header.png"
   }
